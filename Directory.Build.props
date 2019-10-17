@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project>
+  <PropertyGroup>
+    <Authors>Alex Meyer-Gleaves</Authors>
+    <Description>Moniker is a tiny .NET library for generating fun names.</Description>
+    <PackageTags>moniker</PackageTags>
+    <PackageProjectUrl>https://github.com/alexmg/Moniker</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageReleaseNotes>Release notes are at https://github.com/alexmg/Moniker/releases</PackageReleaseNotes>
+    <RepositoryType>git</RepositoryType>
+    <RepositoryUrl>https://github.com/alexmg/Moniker</RepositoryUrl>
+  </PropertyGroup>
+</Project>
