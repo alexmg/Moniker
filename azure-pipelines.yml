@@ -1,0 +1,25 @@
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    version: '3.0.x'
+
+- script: dotnet --info
+  displayName: 'Display .NET Core information'
+
+- script: dotnet pack --configuration $(buildConfiguration)
+  displayName: 'Build and package'
+
+- script: dotnet test --configuration $(buildConfiguration)
+  displayName: 'Run unit tests'
