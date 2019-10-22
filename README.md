@@ -1,10 +1,10 @@
 # Moniker [![Build Status](https://dev.azure.com/alexmg/Moniker/_apis/build/status/alexmg.Moniker?branchName=master)](https://dev.azure.com/alexmg/Moniker/_build/latest?definitionId=4&branchName=master)
 
-Moniker is a tiny .NET library and CLI tool for generating fun names. It started as a port of the [moniker](https://github.com/technosophos/moniker) Go package that is used by the [Helm](https://github.com/helm/helm) project to generate release names, but was extended to also include the name generator used by the [Moby](https://github.com/moby/moby) project for naming Docker containers.
+Moniker is a tiny .NET library and CLI tool for generating fun names.
 
-Both name generators use a scheme that combines a random value from a list of adjectives with another random value from a list of nouns. In the case of Moniker the nouns are [animals](https://github.com/technosophos/moniker/blob/master/animals.txt) and for Moby they are [notable scientists and hackers](https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go#L114).
+It started as a port of the [moniker](https://github.com/technosophos/moniker) Go package that is used by the [Helm](https://github.com/helm/helm) project to generate release names, but was extended to also include the name generator used by the [Moby](https://github.com/moby/moby) project for naming Docker containers. Both name generators use a scheme that combines a random value from a list of adjectives with another random value from a list of nouns.
 
-## Moniker style examples
+In the case of Moniker the nouns are [animals](https://github.com/technosophos/moniker/blob/master/animals.txt):
 
 ```
 wobbly-whippet
@@ -13,7 +13,7 @@ rafting-deer
 lame-gecko
 ```
 
-## Moby style examples
+For Moby they are [notable scientists and hackers](https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go#L114):
 
 ```
 relaxed-booth
