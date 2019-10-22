@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2036
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moniker", "src\Moniker\Moniker.csproj", "{4AE3D031-1238-4411-BB00-59A5308A2467}"
 EndProject
@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Moniker.Cli", "src\Moniker.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{DAAB110E-B15D-45BD-A111-8C5D2A39D37F}"
 	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		azure-pipelines.yml = azure-pipelines.yml
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
