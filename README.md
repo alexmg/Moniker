@@ -2,8 +2,6 @@
 
 # Moniker
 
-## What is it?
-
 Moniker is a tiny .NET library and CLI tool for generating fun names. It started as a port of the [moniker](https://github.com/technosophos/moniker) Go package that is used by the [Helm](https://github.com/helm/helm) project to generate release names, but was extended to also include the name generator used by the [Moby](https://github.com/moby/moby) project for naming Docker containers.
 
 Both name generators use a scheme that combines a random value from a list of adjectives with another random value from a list of nouns. In the case of Moniker the nouns are [animals](https://github.com/technosophos/moniker/blob/master/animals.txt) and for Moby they are [notable scientists and hackers](https://github.com/moby/moby/blob/master/pkg/namesgenerator/names-generator.go#L114).
@@ -30,7 +28,7 @@ objective-gould
 
 To use the .NET Standard 2.0 library install the package from NuGet.
 
-```
+```PowerShell
 Install-Package Moniker
 ```
 
@@ -50,23 +48,23 @@ All methods accept an optional parameter for the delimiter to be used between th
 
 ```csharp
 // Moniker examples
-var moniker = MonikerGenerator.GenerateMoniker(); // Default delimiter
-moniker = MonikerGenerator.GenerateMoniker("_"); // Custom delimiter
-moniker = MonikerGenerator.Generate(MonikerStyle.Moniker); // Default delimiter
-moniker = MonikerGenerator.Generate(MonikerStyle.Moniker, "_"); // Custom delimiter
+MonikerGenerator.GenerateMoniker(); // killjoy-worm
+MonikerGenerator.GenerateMoniker("_"); // killjoy_worm
+MonikerGenerator.Generate(MonikerStyle.Moniker); // killjoy-worm
+MonikerGenerator.Generate(MonikerStyle.Moniker, "_"); // killjoy_worm
 
 // Moby examples
-moniker = MonikerGenerator.GenerateMoby(); // Default delimiter
-moniker = MonikerGenerator.GenerateMoby("_"); // Custom delimiter
-moniker = MonikerGenerator.Generate(MonikerStyle.Moby); // Default delimiter
-moniker = MonikerGenerator.Generate(MonikerStyle.Moby, "_"); // Custom delimiter
+moniker = MonikerGenerator.GenerateMoby(); // priceless-volhard
+moniker = MonikerGenerator.GenerateMoby("_"); // priceless_volhard
+moniker = MonikerGenerator.Generate(MonikerStyle.Moby); // priceless-volhard
+moniker = MonikerGenerator.Generate(MonikerStyle.Moby, "_"); // priceless_volhard
 ```
 
 ## .NET Core Global Tool
 
 To install the .NET Core Global Tool run the following `dotnet` command.
 
-```
+```PowerShell
 dotnet tool install -g Moniker.Cli
 ```
 
@@ -86,21 +84,21 @@ The `STYLE` option is not mandatory and can be specified in the short form `-s` 
 
 The `DELIMITER` option is not mandatory and can be specified in the short form `-d` or long form `--delimiter`. If omitted the default `-` delimiter will be used.
 
-In the example below a Moby style name is generated with the non-default `_` delimiter. If you want to use the default `-` delimter the `-d` option can be omitted.
+In the example below a Moby style name is generated with the non-default `_` delimiter.
 
-```
+```PowerShell
 moniker -s Moby -d _
 ```
 
-The long form can also be used for improved readabilty. As before, the `--delimiter` option can be omitted to use the default `-` delimiter.
+The long form can also be used for improved readabilty.
 
-```
+```PowerShell
 moniker --style Moby --delimiter _
 ```
 
 Capturing the generated name in a variable from the Windows command prompt requires some rather obscure syntax (use `%%i` from inside a batch file). Please let me know if you are aware of a better way.
 
-```
+```bat
 for /f %i in ('moniker') do set NAME=%i
 echo %NAME%
 ```
@@ -116,14 +114,16 @@ Write-Host $name
 
 It should be noted that the lists are not particularly long and the total number of possible combinations is somewhat small (94,138 for Moniker and 25,380 for Moby). If you require names to be unique you will need to append an additional element such as a timestamp or detect duplicates yourself and request another name.
 
-```
-$moniker = "$(moniker)-$(Get-Date -Format 'yyMMdd')"
+```PowerShell
+$moniker = "$(moniker)-$(Get-Date -Format 'yyMMdd')" # virulent-leopard-191022
 ```
 
-You could also generate names using both moniker styles to extend the total range of possible names.
+You could also generate names using both moniker styles to extend the total range of possible names. This will provide longer but still fun sounding names.
 
 ```PowerShell
-$moniker = "$(moniker -s moby)-owns-$(moniker -s moniker)"
+$moniker = "$(moniker -s moby)-owns-$(moniker -s moniker)" # vibrant-newton-owns-warped-rabbit
 ```
 
-This will provide longer but still fun sounding names like `vibrant-newton-owns-warped-rabbit` or `romantic-cannon-owns-deadly-elephant`.
+## Credits
+
+Icon made by [Roundicons](https://www.flaticon.com/authors/roundicons) from [www.flaticon.com](https://www.flaticon.com/)
