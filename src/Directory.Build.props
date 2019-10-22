@@ -2,7 +2,6 @@
 <Project>
   <PropertyGroup>
     <Authors>Alex Meyer-Gleaves</Authors>
-    <Description>Moniker is a tiny .NET library and CLI tool for generating fun names.</Description>
     <PackageTags>moniker</PackageTags>
     <PackageProjectUrl>https://github.com/alexmg/Moniker</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
