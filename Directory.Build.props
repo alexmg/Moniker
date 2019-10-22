@@ -7,7 +7,12 @@
     <PackageProjectUrl>https://github.com/alexmg/Moniker</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReleaseNotes>Release notes are at https://github.com/alexmg/Moniker/releases</PackageReleaseNotes>
+    <PackageIcon>icon.png</PackageIcon>
     <RepositoryType>git</RepositoryType>
     <RepositoryUrl>https://github.com/alexmg/Moniker</RepositoryUrl>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\..\icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>
