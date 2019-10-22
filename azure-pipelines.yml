@@ -18,14 +18,10 @@ steps:
 - script: dotnet --info
   displayName: 'Display .NET Core information'
 
-- script: dotnet pack --configuration $(buildConfiguration)
-  displayName: 'Build and package'
-
 - task: DotNetCoreCLI@2
-  displayName: 'Build and package'
+  displayName: 'Build solution'
   inputs:
-    command: pack
-    projects: '**/*.csproj'
+    command: build
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
@@ -34,3 +30,16 @@ steps:
     command: test
     projects: 'test/*.Tests/*.Tests.csproj'
     arguments: '--no-build --configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Create NuGet packages'
+  inputs:
+    command: pack
+    projects: 'src/**/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Publish NuGet packages'
+  inputs:
+    command: push
+    publishVstsFeed: 'Moniker-CI'
