@@ -37,4 +37,4 @@ steps:
   displayName: 'Publish NuGet packages'
   inputs:
     command: push
-    publishVstsFeed: 'Moniker-CI'
+    publishVstsFeed: 'Moniker'
