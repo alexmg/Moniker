@@ -1,6 +1,4 @@
-
-
-# Moniker
+# Moniker [![Build Status](https://dev.azure.com/alexmg/Moniker/_apis/build/status/alexmg.Moniker?branchName=master)](https://dev.azure.com/alexmg/Moniker/_build/latest?definitionId=4&branchName=master)
 
 Moniker is a tiny .NET library and CLI tool for generating fun names. It started as a port of the [moniker](https://github.com/technosophos/moniker) Go package that is used by the [Helm](https://github.com/helm/helm) project to generate release names, but was extended to also include the name generator used by the [Moby](https://github.com/moby/moby) project for naming Docker containers.
 
