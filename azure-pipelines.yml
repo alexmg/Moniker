@@ -21,5 +21,5 @@ steps:
 - script: dotnet pack --configuration $(buildConfiguration)
   displayName: 'Build and package'
 
-- script: dotnet test --configuration $(buildConfiguration)
+- script: dotnet test --no-build --configuration $(buildConfiguration)
   displayName: 'Run unit tests'
