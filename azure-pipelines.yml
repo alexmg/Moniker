@@ -39,6 +39,12 @@ steps:
     command: push
     publishVstsFeed: 'Moniker'
 
+- task: NuGetAuthenticate@0
+  displayName: 'Authenticate to the NuGet.org feed'
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
+  inputs:
+    nuGetServiceConnections: NuGet
+
 - task: DotNetCoreCLI@2
   displayName: 'Publish NuGet packages to NuGet.org'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
