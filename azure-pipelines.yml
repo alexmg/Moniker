@@ -34,12 +34,13 @@ steps:
     arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish NuGet packages'
+  displayName: 'Publish NuGet packages to Azure Artifacts'
   inputs:
     command: push
     publishVstsFeed: 'Moniker'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Publish NuGet packages to NuGet.org'
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     command: push
