@@ -52,10 +52,10 @@ MonikerGenerator.Generate(MonikerStyle.Moniker); // killjoy-worm
 MonikerGenerator.Generate(MonikerStyle.Moniker, "_"); // killjoy_worm
 
 // Moby examples
-moniker = MonikerGenerator.GenerateMoby(); // priceless-volhard
-moniker = MonikerGenerator.GenerateMoby("_"); // priceless_volhard
-moniker = MonikerGenerator.Generate(MonikerStyle.Moby); // priceless-volhard
-moniker = MonikerGenerator.Generate(MonikerStyle.Moby, "_"); // priceless_volhard
+MonikerGenerator.GenerateMoby(); // priceless-volhard
+MonikerGenerator.GenerateMoby("_"); // priceless_volhard
+MonikerGenerator.Generate(MonikerStyle.Moby); // priceless-volhard
+MonikerGenerator.Generate(MonikerStyle.Moby, "_"); // priceless_volhard
 ```
 
 ## .NET Core Global Tool
