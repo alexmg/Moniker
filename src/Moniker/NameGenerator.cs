@@ -77,7 +77,9 @@ namespace Moniker
 
         private static string GetRandomEntry(IReadOnlyList<string> entries)
         {
-            var index = Random.Next(entries.Count);
+            int index;
+            lock (Random)
+                index = Random.Next(entries.Count);
             return entries[index];
         }
     }
