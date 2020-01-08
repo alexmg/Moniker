@@ -27,7 +27,7 @@ namespace Moniker.Cli
         public int OnExecute()
         {
             var moniker = NameGenerator.Generate(MonikerStyle, Delimiter);
-            _console.Write(moniker);
+            _console.WriteLine(moniker);
             return 0;
         }
 
