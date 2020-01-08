@@ -65,12 +65,14 @@ namespace Moniker
 
             string result;
             var (disallowedAdjective, disallowedNoun) = disallowed;
+            var disallowedResult = $"{disallowedAdjective}{delimiter}{disallowedNoun}";
+
             do
             {
                 var adjective = GetRandomEntry(adjectives);
                 var noun = GetRandomEntry(nouns);
                 result = $"{adjective}{delimiter}{noun}";
-            } while (result == $"{disallowedAdjective}{delimiter}{disallowedNoun}");
+            } while (result == disallowedResult);
 
             return result;
         }
