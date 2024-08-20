@@ -6,12 +6,12 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayName: 'Install .NET Core SDK'
+  displayName: 'Install .NET SDK'
   inputs:
-    version: '3.0.x'
+    version: '8.0.x'
 
 - script: dotnet --info
-  displayName: 'Display .NET Core information'
+  displayName: 'Display .NET information'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build solution'
