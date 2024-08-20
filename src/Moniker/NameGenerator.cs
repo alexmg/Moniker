@@ -8,8 +8,6 @@ namespace Moniker
     /// </summary>
     public static class NameGenerator
     {
-        private static readonly Random Random = new Random();
-
         /// <summary>
         /// The default delimiter between adjective and noun.
         /// </summary>
@@ -24,15 +22,12 @@ namespace Moniker
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string Generate(MonikerStyle monikerStyle, string delimiter = DefaultDelimiter)
         {
-            switch (monikerStyle)
+            return monikerStyle switch
             {
-                case MonikerStyle.Moby:
-                    return GenerateMoby(delimiter);
-                case MonikerStyle.Moniker:
-                    return GenerateMoniker(delimiter);
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(monikerStyle));
-            }
+                MonikerStyle.Moby => GenerateMoby(delimiter),
+                MonikerStyle.Moniker => GenerateMoniker(delimiter),
+                _ => throw new ArgumentOutOfRangeException(nameof(monikerStyle))
+            };
         }
 
         /// <summary>
@@ -77,7 +72,7 @@ namespace Moniker
 
         private static string GetRandomEntry(IReadOnlyList<string> entries)
         {
-            var index = Random.Next(entries.Count);
+            var index = Random.Shared.Next(entries.Count);
             return entries[index];
         }
     }
