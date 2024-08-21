@@ -1,0 +1,54 @@
+﻿name: Continuous Integration
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+  pull_request:
+    branches:
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Display .NET information
+        run: dotnet --info
+
+      - name: Build solution
+        run: dotnet build --configuration Release
+
+      - name: Run unit tests
+        run: dotnet test --no-build --configuration Release
+
+      - name: Create NuGet packages
+        run: dotnet pack --configuration Release
+
+      - name: Publish NuGet packages to GitHub Packages
+        if: github.event_name == 'push'
+        run: |
+          dotnet nuget add source \
+            --username alexmg \
+            --password ${{ secrets.GITHUB_TOKEN }} \
+            --store-password-in-clear-text \
+            --name github \
+            https://nuget.pkg.github.com/alexmg/index.json
+          dotnet nuget push '**/*.nupkg' \
+            --source github \
+            --api-key ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Publish NuGet packages to NuGet.org
+        if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+        run: |
+          dotnet nuget push '**/*.nupkg' \
+            --source 'https://api.nuget.org/v3/index.json' \
+            --api-key ${{ secrets.NUGET_API_KEY }}
