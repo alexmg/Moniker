@@ -37,7 +37,7 @@ namespace Moniker.Cli
         private static string GetVersion() =>
             (string)typeof(Program).Assembly
                 .GetType("GitVersionInformation")!
-                .GetField("MajorMinorPatch")!
+                .GetField("FullSemVer")!
                 .GetValue(null);
     }
 }
