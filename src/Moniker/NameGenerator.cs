@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Moniker
 {
@@ -36,7 +35,7 @@ namespace Moniker
         /// <param name="delimiter">An optional delimiter to use between adjective and noun.</param>
         /// <returns>The generated random name.</returns>
         public static string GenerateMoniker(string delimiter = DefaultDelimiter)
-            => BuildNamePair(Moniker.Descriptors, Moniker.Animals, delimiter);
+            => BuildNamePair(MonikerDescriptors.Strings, MonikerAnimals.Strings, delimiter);
 
         /// <summary>
         /// Generate a random name in the 'moby' project style.
@@ -45,34 +44,43 @@ namespace Moniker
         /// <returns>The generated random name.</returns>
         public static string GenerateMoby(string delimiter = DefaultDelimiter)
         {
-            var disallowed = ("boring", "wozniak"); // Steve Wozniak is not boring
-            return BuildNamePair(Moby.Adjectives, Moby.Surname, delimiter, disallowed);
+            return BuildNamePair(MobyAdjectives.Strings, MobySurnames.Strings, delimiter);
         }
 
         private static string BuildNamePair(
-            IReadOnlyList<string> adjectives,
-            IReadOnlyList<string> nouns,
-            string delimiter,
-            (string, string) disallowed = default)
+            Utf8Strings adjectives,
+            Utf8Strings nouns,
+            string delimiter)
         {
             if (string.IsNullOrEmpty(delimiter))
                 throw new ArgumentException("The delimiter must not be null or empty.", nameof(delimiter));
 
-            string result;
-            var (disallowedAdjective, disallowedNoun) = disallowed;
-            var disallowedResult = $"{disallowedAdjective}{delimiter}{disallowedNoun}";
+            BuildNamePair(adjectives, out var adjective, nouns, out var noun);
 
-            do
-            {
-                var adjective = GetRandomEntry(adjectives);
-                var noun = GetRandomEntry(nouns);
-                result = $"{adjective}{delimiter}{noun}";
-            } while (result == disallowedResult);
+            var length = adjective.CharCount + delimiter.Length + noun.CharCount;
 
-            return result;
+            var chars = length <= 64 ? stackalloc char[length] : new char[length];
+
+            _ = adjective.GetChars(chars);
+            delimiter.CopyTo(chars[adjective.CharCount..]);
+            noun.GetChars(chars[(adjective.CharCount + delimiter.Length)..]);
+
+            return new(chars);
         }
 
-        private static string GetRandomEntry(IReadOnlyList<string> entries)
+        private static void BuildNamePair(
+            Utf8Strings adjectives, out Utf8String adjective,
+            Utf8Strings nouns, out Utf8String noun)
+        {
+            do
+            {
+                adjective = GetRandomEntry(adjectives);
+                noun = GetRandomEntry(nouns);
+            }
+            while (adjective == "boring"u8 && noun == "wozniak"u8);// Steve Wozniak is not boring
+        }
+
+        private static Utf8String GetRandomEntry(Utf8Strings entries)
         {
             var index = Random.Shared.Next(entries.Count);
             return entries[index];
