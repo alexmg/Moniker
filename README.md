@@ -24,9 +24,9 @@ thirsty-williamson
 objective-gould
 ```
 
-## .NET Standard Library
+## .NET Library
 
-To use the .NET Standard 2.0 library install the package from NuGet.
+To use the library (requires .NET 8 or later) install the package from NuGet.
 
 ```PowerShell
 Install-Package Moniker
