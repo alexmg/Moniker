@@ -31,7 +31,10 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run unit tests
-        run: dotnet test --no-build --configuration Release
+        run: dotnet test test\Moniker.Tests --configuration Release --no-build --no-restore
+
+      - name: Run approval tests
+        run: dotnet test test\Moniker.ApprovalTests --configuration Release --no-build --no-restore
 
       - name: Create NuGet packages
         run: dotnet pack --configuration Release

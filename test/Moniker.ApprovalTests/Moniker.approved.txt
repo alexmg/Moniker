@@ -1,0 +1,15 @@
+namespace Moniker
+{
+    public enum MonikerStyle
+    {
+        Moniker = 0,
+        Moby = 1,
+    }
+    public static class NameGenerator
+    {
+        public const string DefaultDelimiter = "-";
+        public static string Generate(Moniker.MonikerStyle monikerStyle, string delimiter = "-") { }
+        public static string GenerateMoby(string delimiter = "-") { }
+        public static string GenerateMoniker(string delimiter = "-") { }
+    }
+}
