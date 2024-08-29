@@ -12,6 +12,12 @@
     <RepositoryUrl>https://github.com/alexmg/Moniker</RepositoryUrl>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Include="..\..\icon.png" Pack="true" PackagePath="\" />
     <None Include="..\..\README.md" Pack="true" PackagePath="\" />

@@ -3,6 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using FluentAssertions;
 using Xunit;
 
 namespace Moniker.Tests;
@@ -19,37 +20,41 @@ public class StringDataTests
     }
 
     [Fact]
-    public void MobyAdjectivesData()
-    {
-        Test(ThisAssembly.Resources.MobyAdjectives.Text, MobyAdjectives.Strings,
-             MobyAdjectives.Count, expectedCount: 108);
-    }
+    public void MobyAdjectivesData() =>
+        Test(GetEmbeddedResource("MobyAdjectives.txt"),
+            MobyAdjectives.Strings,
+            MobyAdjectives.Count,
+            expectedCount: 108);
 
     [Fact]
-    public void MobySurnamesData()
-    {
-        Test(ThisAssembly.Resources.MobySurnames.Text, MobySurnames.Strings,
-             MobySurnames.Count, expectedCount: 235);
-    }
+    public void MobySurnamesData() =>
+        Test(GetEmbeddedResource("MobySurnames.txt"),
+            MobySurnames.Strings,
+            MobySurnames.Count,
+            expectedCount: 235);
 
     [Fact]
     public void MonikerDescriptorsData()
     {
-        Test(ThisAssembly.Resources.MonikerDescriptors.Text, MonikerDescriptors.Strings,
-             MonikerDescriptors.Count, expectedCount: 389);
+        Test(GetEmbeddedResource("MonikerDescriptors.txt"),
+            MonikerDescriptors.Strings,
+            MonikerDescriptors.Count,
+            expectedCount: 389);
     }
 
     [Fact]
     public void MonikerAnimalsData()
     {
-        Test(ThisAssembly.Resources.MonikerAnimals.Text, MonikerAnimals.Strings,
-             MonikerAnimals.Count, expectedCount: 242);
+        Test(GetEmbeddedResource("MonikerAnimals.txt"),
+            MonikerAnimals.Strings,
+            MonikerAnimals.Count,
+            expectedCount: 242);
     }
 
-    static void Test(string source, Utf8Strings strings, int count, int expectedCount)
+    private static void Test(string source, Utf8Strings strings, int count, int expectedCount)
     {
-        Assert.Equal(expectedCount, count);
-        Assert.Equal(expectedCount, strings.Count);
+        count.Should().Be(expectedCount);
+        strings.Count.Should().Be(expectedCount);
 
         var lines = from e in ReadLines(source)
                     select e.Trim()
@@ -82,10 +87,19 @@ public class StringDataTests
         Assert.Equal(i, strings.Count);
     }
 
-    static IEnumerable<string> ReadLines(string text)
+    private static IEnumerable<string> ReadLines(string text)
     {
         using var reader = new StringReader(text);
         while (reader.ReadLine() is { } line)
             yield return line;
+    }
+
+    private static string GetEmbeddedResource(string fileName)
+    {
+        var assembly = typeof(StringDataTests).Assembly;
+        var assemblyName = assembly.GetName().Name;
+        using var stream = assembly.GetManifestResourceStream($"{assemblyName}.{fileName}");
+        using var reader = new StreamReader(stream!);
+        return reader.ReadToEnd();
     }
 }

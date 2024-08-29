@@ -43,9 +43,7 @@ namespace Moniker
         /// <param name="delimiter">An optional delimiter to use between adjective and noun.</param>
         /// <returns>The generated random name.</returns>
         public static string GenerateMoby(string delimiter = DefaultDelimiter)
-        {
-            return BuildNamePair(MobyAdjectives.Strings, MobySurnames.Strings, delimiter);
-        }
+            => BuildNamePair(MobyAdjectives.Strings, MobySurnames.Strings, delimiter);
 
         private static string BuildNamePair(
             Utf8Strings adjectives,
@@ -77,7 +75,7 @@ namespace Moniker
                 adjective = GetRandomEntry(adjectives);
                 noun = GetRandomEntry(nouns);
             }
-            while (adjective == "boring"u8 && noun == "wozniak"u8);// Steve Wozniak is not boring
+            while (adjective == "boring"u8 && noun == "wozniak"u8); // Steve Wozniak is not boring
         }
 
         private static Utf8String GetRandomEntry(Utf8Strings entries)

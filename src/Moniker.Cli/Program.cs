@@ -34,8 +34,8 @@ namespace Moniker.Cli
         private static int Main(string[] args)
             => CommandLineApplication.Execute<Program>(args);
 
-        private static string GetVersion() =>
-            (string)typeof(Program).Assembly
+        private static string? GetVersion() =>
+            (string?)typeof(Program).Assembly
                 .GetType("GitVersionInformation")!
                 .GetField("FullSemVer")!
                 .GetValue(null);

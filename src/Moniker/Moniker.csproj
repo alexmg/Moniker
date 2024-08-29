@@ -3,14 +3,12 @@
   <PropertyGroup>
     <Description>Moniker is a tiny .NET library for generating fun names.</Description>
     <TargetFramework>net8.0</TargetFramework>
-    <LangVersion>latest</LangVersion>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
-	<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
-      <_Parameter1>Moniker.Tests</_Parameter1>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>$(AssemblyName).Tests</_Parameter1>
     </AssemblyAttribute>
   </ItemGroup>
 
@@ -21,22 +19,22 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Moniker.g.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <LastGenOutput>Moniker.g.cs</LastGenOutput>
-    </None>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AdditionalFiles Include="*.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Moniker.Generator\Moniker.Generator.csproj"
+                      OutputItemType="Analyzer" 
+                      ReferenceOutputAssembly="false" />
   </ItemGroup>
 
   <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Update="Moniker.g.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Moniker.g.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
 
 </Project>
