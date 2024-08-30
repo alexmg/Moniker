@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -62,29 +63,30 @@ public class StringDataTests
                     where e is [not '#', ..]
                     select e;
 
-        var i = 0;
+        var index = 0;
         using var line = lines.GetEnumerator();
 
         foreach (var u8Str in strings)
         {
-            Assert.True(line.MoveNext());
+            line.MoveNext().Should().BeTrue();
             var str = Encoding.UTF8.GetString(u8Str);
-            Assert.Equal(line.Current, str);
-            Assert.Equal(line.Current, u8Str.ToString());
-            Assert.Equal(u8Str, strings[i].Bytes);
-            Assert.True(u8Str == strings[i]);
+            str.Should().Be(line.Current);
+            u8Str.ToString().Should().Be(line.Current);
+
+            strings[index].Bytes.SequenceEqual(u8Str).Should().BeTrue();
+            (u8Str == strings[index]).Should().BeTrue();
 
             // Except for some coincidental cases, ensure string isn't interned.
             // This list is not exhaustive and even may be brittle (subject to
             // test host).
 
             if (str is not "kind" and not "gopher" and not "left" and not "right")
-                Assert.Null(string.IsInterned(str));
+                string.IsInterned(str).Should().BeNull();
 
-            i++;
+            index++;
         }
 
-        Assert.Equal(i, strings.Count);
+        strings.Count.Should().Be(index);
     }
 
     private static IEnumerable<string> ReadLines(string text)
