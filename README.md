@@ -1,4 +1,4 @@
-# Moniker [![Build Status](https://dev.azure.com/alexmg/Moniker/_apis/build/status/alexmg.Moniker?branchName=master)](https://dev.azure.com/alexmg/Moniker/_build/latest?definitionId=4&branchName=master) [![Moniker NuGet](https://img.shields.io/nuget/v/Moniker?label=Moniker%20NuGet)](https://www.nuget.org/packages/Moniker) [![Moniker.CLI NuGet](https://img.shields.io/nuget/v/Moniker.CLI?label=Moniker.CLI%20NuGet)](https://www.nuget.org/packages/Moniker.Cli)
+# Moniker [![Continuous Integration](https://github.com/alexmg/Moniker/actions/workflows/ci.yml/badge.svg)](https://github.com/alexmg/Moniker/actions/workflows/ci.yml) [![Moniker NuGet](https://img.shields.io/nuget/v/Moniker?label=Moniker%20NuGet)](https://www.nuget.org/packages/Moniker) [![Moniker.CLI NuGet](https://img.shields.io/nuget/v/Moniker.CLI?label=Moniker.CLI%20NuGet)](https://www.nuget.org/packages/Moniker.Cli)
 
 <img src="https://raw.githubusercontent.com/alexmg/Moniker/develop/icon.png" align="left" style="padding-right: 15px" alt="Moniker Logo" width="68"/>
 
