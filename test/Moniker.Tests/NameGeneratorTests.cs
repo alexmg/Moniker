@@ -52,5 +52,34 @@ namespace Moniker.Tests
 
             moniker.Should().MatchRegex(expected);
         }
+
+        [Theory]
+        [InlineData(MonikerStyle.Moby)]
+        [InlineData(MonikerStyle.Moniker)]
+        public void GeneratePairWithSpecificMonikerStyleMethods(MonikerStyle monikerStyle)
+        {
+            Chars adjective, noun;
+
+            switch (monikerStyle)
+            {
+                case MonikerStyle.Moniker: NameGenerator.GenerateMoniker(out adjective, out noun); break;
+                case MonikerStyle.Moby: NameGenerator.GenerateMoby(out adjective, out noun); break;
+                default: throw new ArgumentOutOfRangeException(nameof(monikerStyle), monikerStyle, null);
+            };
+            const string expected = /* lang=regex */ "^[a-zA-Z]+$";
+            adjective.ToString().Should().MatchRegex(expected);
+            noun.ToString().Should().MatchRegex(expected);
+        }
+
+        [Theory]
+        [InlineData(MonikerStyle.Moby)]
+        [InlineData(MonikerStyle.Moniker)]
+        public void GeneratePairWithMonikerStyleParameter(MonikerStyle monikerStyle)
+        {
+            NameGenerator.Generate(monikerStyle, out var adjective, out var noun);
+            const string expected = /* lang=regex */ "^[a-zA-Z]+$";
+            adjective.ToString().Should().MatchRegex(expected);
+            noun.ToString().Should().MatchRegex(expected);
+        }
     }
 }
