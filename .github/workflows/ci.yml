@@ -31,10 +31,35 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run unit tests
-        run: dotnet test ./test/Moniker.Tests --configuration Release --no-build --no-restore
+        run: >
+          dotnet test
+          ./test/Moniker.Tests
+          --configuration Release
+          --no-build
+          --no-restore
+          --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true"
+          --collect:"XPlat Code Coverage"
+          --
+          RunConfiguration.CollectSourceInformation=true
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
 
       - name: Run approval tests
-        run: dotnet test ./test/Moniker.ApprovalTests --configuration Release --no-build --no-restore
+        run: >
+          dotnet test
+          ./test/Moniker.ApprovalTests
+          --configuration Release
+          --no-build
+          --no-restore
+          --logger "GitHubActions;summary.includePassedTests=true;summary.includeSkippedTests=true"
+          --collect:"XPlat Code Coverage"
+          --
+          RunConfiguration.CollectSourceInformation=true
+          DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+
+      - name: Upload coverage
+        uses: codecov/codecov-action@e28ff129e5465c2c0dcc6f003fc735cb6ae0c673 # v4.5.0
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Create NuGet packages
         run: dotnet pack --configuration Release
