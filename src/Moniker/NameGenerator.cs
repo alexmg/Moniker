@@ -33,8 +33,7 @@ namespace Moniker
         /// </summary>
         /// <param name="monikerStyle">The style of random name.</param>
         /// <param name="adjective">The adjective part of the random name.</param>
-        /// <param name="noun">The adjective part of the random name.</param>
-        /// <returns>The generated random name.</returns>
+        /// <param name="noun">The noun part of the random name.</param>
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static void Generate(MonikerStyle monikerStyle, out Chars adjective, out Chars noun)
         {
@@ -61,7 +60,8 @@ namespace Moniker
         /// <summary>
         /// Generate a random name in the 'moniker' project style.
         /// </summary>
-        /// <returns>The generated random name.</returns>
+        /// <param name="adjective">The adjective part of the random name.</param>
+        /// <param name="noun">The noun part of the random name.</param>
         public static void GenerateMoniker(out Chars adjective, out Chars noun)
             => BuildNamePair(MonikerDescriptors.Strings, out adjective, MonikerAnimals.Strings, out noun);
 
@@ -75,22 +75,6 @@ namespace Moniker
             ValidateDelimiterArgument(delimiter);
             GenerateMoby(out var adjective, out var noun);
             return Join(adjective, delimiter, noun);
-        }
-
-        private static string Join(Chars adjective, ReadOnlySpan<char> delimiter, Chars noun)
-        {
-            var length = adjective.Length + delimiter.Length + noun.Length;
-            var chars = length <= 64 ? stackalloc char[length] : new char[length];
-
-            var writeCount = adjective.Write(chars);
-            Debug.Assert(writeCount == adjective.Length);
-
-            delimiter.CopyTo(chars[adjective.Length..]);
-
-            writeCount = noun.Write(chars[(adjective.Length + delimiter.Length)..]);
-            Debug.Assert(writeCount == noun.Length);
-
-            return new(chars);
         }
 
         /// <summary>
@@ -124,6 +108,22 @@ namespace Moniker
         {
             var index = Random.Shared.Next(entries.Count);
             return entries[index];
+        }
+
+        private static string Join(Chars adjective, ReadOnlySpan<char> delimiter, Chars noun)
+        {
+            var length = adjective.Length + delimiter.Length + noun.Length;
+            var chars = length <= 64 ? stackalloc char[length] : new char[length];
+
+            var writeCount = adjective.Write(chars);
+            Debug.Assert(writeCount == adjective.Length);
+
+            delimiter.CopyTo(chars[adjective.Length..]);
+
+            writeCount = noun.Write(chars[(adjective.Length + delimiter.Length)..]);
+            Debug.Assert(writeCount == noun.Length);
+
+            return new(chars);
         }
     }
 }
