@@ -1,5 +1,25 @@
 namespace Moniker
 {
+    [System.Obsolete("Types with embedded references are not supported in this version of your compiler" +
+        ".", true)]
+    [System.Runtime.CompilerServices.CompilerFeatureRequired("RefStructs")]
+    [System.Runtime.CompilerServices.IsByRefLike]
+    public readonly struct Chars
+    {
+        public int Length { get; }
+        public int Utf8Length { get; }
+        public bool Equals(Moniker.Chars other) { }
+        [System.Obsolete("This method is unsupported and will always throw an exception. Use the equality o" +
+            "perator instead.")]
+        public override bool Equals(object? obj) { }
+        [System.Obsolete("This method is unsupported and will always throw an exception.")]
+        public override int GetHashCode() { }
+        public override string ToString() { }
+        public int Write(System.Span<char> buffer) { }
+        public int WriteUtf8(System.Span<byte> buffer) { }
+        public static bool operator !=(Moniker.Chars left, Moniker.Chars right) { }
+        public static bool operator ==(Moniker.Chars left, Moniker.Chars right) { }
+    }
     public enum MonikerStyle
     {
         Moniker = 0,
@@ -9,7 +29,10 @@ namespace Moniker
     {
         public const string DefaultDelimiter = "-";
         public static string Generate(Moniker.MonikerStyle monikerStyle, string delimiter = "-") { }
+        public static void Generate(Moniker.MonikerStyle monikerStyle, out Moniker.Chars adjective, out Moniker.Chars noun) { }
         public static string GenerateMoby(string delimiter = "-") { }
+        public static void GenerateMoby(out Moniker.Chars adjective, out Moniker.Chars noun) { }
         public static string GenerateMoniker(string delimiter = "-") { }
+        public static void GenerateMoniker(out Moniker.Chars adjective, out Moniker.Chars noun) { }
     }
 }

@@ -6,32 +6,6 @@ using System.Text;
 
 namespace Moniker;
 
-internal readonly ref struct Utf8String(ReadOnlySpan<byte> bytes, int charCount)
-{
-    public readonly ReadOnlySpan<byte> Bytes = bytes;
-    public readonly int CharCount = charCount;
-
-    public int GetChars(Span<char> chars) => Encoding.UTF8.GetChars(Bytes, chars);
-
-    public override string ToString() => Encoding.UTF8.GetString(Bytes);
-
-    // Equality members
-
-    public static bool operator ==(Utf8String left, ReadOnlySpan<byte> right) => left.Equals(right);
-    public static bool operator !=(Utf8String left, ReadOnlySpan<byte> right) => !left.Equals(right);
-
-    private bool Equals(ReadOnlySpan<byte> other) => Bytes.SequenceEqual(other);
-
-    // Unsupported equality members because this type cannot be boxed
-
-    public override int GetHashCode() => throw new NotSupportedException();
-    public override bool Equals(object? obj) => throw new NotSupportedException();
-
-    // Implicit conversions
-
-    public static implicit operator ReadOnlySpan<byte>(Utf8String data) => data.Bytes;
-}
-
 internal readonly ref struct Utf8Strings
 {
     private readonly ReadOnlySpan<byte> _data;
@@ -52,7 +26,7 @@ internal readonly ref struct Utf8Strings
         _charCounts = charCounts;
     }
 
-    public Utf8String this[int index] => new(_data[_offsets[index].._offsets[index + 1]], _charCounts[index]);
+    public Chars this[int index] => new(_data[_offsets[index].._offsets[index + 1]], _charCounts[index]);
 
     public override string ToString() => $"{{ Count = {Count}, Size = {_data.Length} }}";
 
@@ -67,7 +41,7 @@ internal readonly ref struct Utf8Strings
         /// Behaviour is undefined if <see cref="MoveNext"/> has never been called or returned
         /// <see langword="false"/>.
         /// </remarks>
-        public Utf8String Current => _strings[_index];
+        public Chars Current => _strings[_index];
 
         public bool MoveNext()
         {

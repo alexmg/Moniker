@@ -66,15 +66,12 @@ public class StringDataTests
         var index = 0;
         using var line = lines.GetEnumerator();
 
-        foreach (var u8Str in strings)
+        foreach (var chars in strings)
         {
             line.MoveNext().Should().BeTrue();
-            var str = Encoding.UTF8.GetString(u8Str);
-            str.Should().Be(line.Current);
-            u8Str.ToString().Should().Be(line.Current);
-
-            strings[index].Bytes.SequenceEqual(u8Str).Should().BeTrue();
-            (u8Str == strings[index]).Should().BeTrue();
+            var str = chars.ToString();
+            chars.ToString().Should().Be(line.Current);
+            (chars == strings[index]).Should().BeTrue();
 
             // Except for some coincidental cases, ensure string isn't interned.
             // This list is not exhaustive and even may be brittle (subject to

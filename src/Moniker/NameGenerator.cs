@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Moniker
 {
@@ -21,12 +23,27 @@ namespace Moniker
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public static string Generate(MonikerStyle monikerStyle, string delimiter = DefaultDelimiter)
         {
-            return monikerStyle switch
+            ValidateDelimiterArgument(delimiter);
+            Generate(monikerStyle, out var adjective, out var noun);
+            return Join(adjective, delimiter, noun);
+        }
+
+        /// <summary>
+        /// Generate a random name in the specified style.
+        /// </summary>
+        /// <param name="monikerStyle">The style of random name.</param>
+        /// <param name="adjective">The adjective part of the random name.</param>
+        /// <param name="noun">The adjective part of the random name.</param>
+        /// <returns>The generated random name.</returns>
+        /// <exception cref="ArgumentOutOfRangeException"></exception>
+        public static void Generate(MonikerStyle monikerStyle, out Chars adjective, out Chars noun)
+        {
+            switch (monikerStyle)
             {
-                MonikerStyle.Moby => GenerateMoby(delimiter),
-                MonikerStyle.Moniker => GenerateMoniker(delimiter),
-                _ => throw new ArgumentOutOfRangeException(nameof(monikerStyle))
-            };
+                case MonikerStyle.Moby: GenerateMoby(out adjective, out noun); break;
+                case MonikerStyle.Moniker: GenerateMoniker(out adjective, out noun); break;
+                default: throw new ArgumentOutOfRangeException(nameof(monikerStyle));
+            }
         }
 
         /// <summary>
@@ -35,7 +52,18 @@ namespace Moniker
         /// <param name="delimiter">An optional delimiter to use between adjective and noun.</param>
         /// <returns>The generated random name.</returns>
         public static string GenerateMoniker(string delimiter = DefaultDelimiter)
-            => BuildNamePair(MonikerDescriptors.Strings, MonikerAnimals.Strings, delimiter);
+        {
+            ValidateDelimiterArgument(delimiter);
+            GenerateMoniker(out var adjective, out var noun);
+            return Join(adjective, delimiter, noun);
+        }
+
+        /// <summary>
+        /// Generate a random name in the 'moniker' project style.
+        /// </summary>
+        /// <returns>The generated random name.</returns>
+        public static void GenerateMoniker(out Chars adjective, out Chars noun)
+            => BuildNamePair(MonikerDescriptors.Strings, out adjective, MonikerAnimals.Strings, out noun);
 
         /// <summary>
         /// Generate a random name in the 'moby' project style.
@@ -43,42 +71,56 @@ namespace Moniker
         /// <param name="delimiter">An optional delimiter to use between adjective and noun.</param>
         /// <returns>The generated random name.</returns>
         public static string GenerateMoby(string delimiter = DefaultDelimiter)
-            => BuildNamePair(MobyAdjectives.Strings, MobySurnames.Strings, delimiter);
-
-        private static string BuildNamePair(
-            Utf8Strings adjectives,
-            Utf8Strings nouns,
-            string delimiter)
         {
-            if (string.IsNullOrEmpty(delimiter))
-                throw new ArgumentException("The delimiter must not be null or empty.", nameof(delimiter));
+            ValidateDelimiterArgument(delimiter);
+            GenerateMoby(out var adjective, out var noun);
+            return Join(adjective, delimiter, noun);
+        }
 
-            BuildNamePair(adjectives, out var adjective, nouns, out var noun);
-
-            var length = adjective.CharCount + delimiter.Length + noun.CharCount;
-
+        private static string Join(Chars adjective, ReadOnlySpan<char> delimiter, Chars noun)
+        {
+            var length = adjective.Length + delimiter.Length + noun.Length;
             var chars = length <= 64 ? stackalloc char[length] : new char[length];
 
-            _ = adjective.GetChars(chars);
-            delimiter.CopyTo(chars[adjective.CharCount..]);
-            noun.GetChars(chars[(adjective.CharCount + delimiter.Length)..]);
+            var writeCount = adjective.Write(chars);
+            Debug.Assert(writeCount == adjective.Length);
+
+            delimiter.CopyTo(chars[adjective.Length..]);
+
+            writeCount = noun.Write(chars[(adjective.Length + delimiter.Length)..]);
+            Debug.Assert(writeCount == noun.Length);
 
             return new(chars);
         }
 
+        /// <summary>
+        /// Generate a random name in the 'moby' project style.
+        /// </summary>
+        /// <returns>The generated random name.</returns>
+        public static void GenerateMoby(out Chars adjective, out Chars noun)
+            => BuildNamePair(MobyAdjectives.Strings, out adjective, MobySurnames.Strings, out noun);
+
+        private static void ValidateDelimiterArgument(
+            string delimiter,
+            [CallerArgumentExpression(nameof(delimiter))] string? paramName = null)
+        {
+            if (string.IsNullOrEmpty(delimiter))
+                throw new ArgumentException("The delimiter must not be null or empty.", paramName);
+        }
+
         private static void BuildNamePair(
-            Utf8Strings adjectives, out Utf8String adjective,
-            Utf8Strings nouns, out Utf8String noun)
+            Utf8Strings adjectives, out Chars adjective,
+            Utf8Strings nouns, out Chars noun)
         {
             do
             {
                 adjective = GetRandomEntry(adjectives);
                 noun = GetRandomEntry(nouns);
             }
-            while (adjective == "boring"u8 && noun == "wozniak"u8); // Steve Wozniak is not boring
+            while (adjective.Equals("boring"u8) && noun.Equals("wozniak"u8)); // Steve Wozniak is not boring
         }
 
-        private static Utf8String GetRandomEntry(Utf8Strings entries)
+        private static Chars GetRandomEntry(Utf8Strings entries)
         {
             var index = Random.Shared.Next(entries.Count);
             return entries[index];
