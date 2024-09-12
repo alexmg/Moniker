@@ -1,8 +1,5 @@
-﻿#nullable enable
-
-using System;
+﻿using System;
 using System.Diagnostics;
-using System.Text;
 
 namespace Moniker;
 
@@ -41,7 +38,7 @@ internal readonly ref struct Utf8Strings
         /// Behaviour is undefined if <see cref="MoveNext"/> has never been called or returned
         /// <see langword="false"/>.
         /// </remarks>
-        public Chars Current => _strings[_index];
+        public readonly Chars Current => _strings[_index];
 
         public bool MoveNext()
         {
